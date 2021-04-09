@@ -1,21 +1,25 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class AdminControler extends CI_Controller {
+class MArtket extends CI_Controller {
 
-	public function index()
-	{
-		$this->AllData();
+	/**
+	 * Index Page for this controller.
+	 *
+	 * Maps to the following URL
+	 * 		http://example.com/index.php/welcome
+	 *	- or -
+	 * 		http://example.com/index.php/welcome/index
+	 *	- or -
+	 * Since this controller is set as the default controller in
+	 * config/routes.php, it's displayed at http://example.com/
+	 *
+	 * So any other public methods not prefixed with an underscore will
+	 * map to /index.php/welcome/<method_name>
+	 * @see https://codeigniter.com/user_guide/general/urls.html
+	 */
 
-	}
-	public function AllData()
-	{
-		$AllData['ClassMaker'] = $this->db->get('ClassMaker')->result_array();
-		$AllData['AttributMaker']= array_reverse($this->db->get('AttributMaker')->result_array());
-		echo json_encode($AllData);
-	}
-
-	public function json_get()
+	public function alldata()
 	{
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
@@ -43,67 +47,25 @@ class AdminControler extends CI_Controller {
 			echo "cURL Error #:" . $err;
 		} else {
 			$AllData=json_decode($response);
-			return $AllData;
+			$data=[];
+			foreach ($AllData->AttributMaker as $key=>$wals){
+				$data[$wals->TheKey]=$wals;
+			};
+
+			foreach ($AllData->ClassMaker as $key=>$wals){
+				foreach ($AllData->AttributMaker as $key2=>$item) {
+					if ($item->Class==$wals->NameClass){
+						$data[$wals->NameClass][$item->TheKey]=$item;
+					}
+				}
+			};
+		return $data;
 		}
 
 	}
-
-	public function AdminControll()
+	public function index()
 	{
-		$data= $this->json_get();
-		$this->load->view("Admin/Admin",$data);
-
-	}
-
-	public function Create()
-	{
-		if (!empty($_POST)){
-			$this->db->set($_POST);
-			$this->db->insert('AttributMaker');
-		}
-			$data= $this->json_get();
-		if (!empty($_GET["sic"])){$data["SIC"]="SUCCESS";}
-			$this->load->view('Admin/NewItem',$data);
-	}
-
-	public function ClassAdd()
-	{
-		if (!empty($_POST)){
-			$this->db->set($_POST);
-			$this->db->insert('ClassMaker');
-			redirect("/Admin/Creat");
-		}
-		$data= $this->json_get();
-		$this->load->view('Admin/NewClass',$data);
-
-
-	}
-	public function more()
-	{
-
-		$data= $this->json_get();
-		$datapas["ClassMaker"]=$data->ClassMaker;
-		$datapas["AttributMaker"] = $this->db->get_where('AttributMaker',array('id' => $_GET['id']))->result_array();
-		$this->load->view('Admin/more',$datapas);
-
-	}
-
-	public function del()
-	{
-		$this->db->where('id', $_GET['id']);
-		$this->db->delete('AttributMaker');
-		redirect("/Admin");
-	}
-	public function updateAdmin()
-	{
-
-		$id=$_POST['id'];
-		unset($_POST['id']);
-		$this->db->set($_POST);
-		$this->db->where('id', $id);
-		$this->db->update('AttributMaker');
-		redirect("/Admin");
-
+		$data=$this->alldata();
+		$this->load->view('welcome_message',$data);
 	}
 }
-?>
