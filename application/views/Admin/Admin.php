@@ -41,14 +41,12 @@
 						<form action="<?= base_url("/Update") ?>" method="POST">
 							<?php foreach ($cal as $key2 => $item) { ?>
 								<?php if ($key2 == "Spesial_Style" || $key2 == "other_2" || $key2 == "other_3") {
-
 								} else {
 									?>
-
 									<td scope="col">
 										<?php echo $item ?>
 									</td>
-								<? } ?>
+								<?php } ?>
 							<?php } ?>
 							<td scope="col">
 								<div class="btn-group" role="group" aria-label="Basic mixed styles example">

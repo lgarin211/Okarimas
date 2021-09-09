@@ -25,7 +25,7 @@
 							<?php foreach ($AttributMaker[0] as $key => $value){
 								if ($key == "id") {?>
 									<input type="hidden" name="<?=$key?>" value="<?= $value?>">
-									<?
+									<?php
 								} elseif ($key == "Class") {
 									?>
 
@@ -41,7 +41,7 @@
 									<textarea rows="5" class="col-md-9" type="text" name="<?= $key ?>"
 											  placeholder="<?= $key ?>"><?= $value ?></textarea>
 									</div>
-								<? }} ?>
+								<?php }} ?>
 						</div>
 						<button class="btn btn-primary col-md-12" type="submit">Kirim</button>
 					</form>

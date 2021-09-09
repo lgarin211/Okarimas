@@ -6,13 +6,13 @@ class AdminControler extends CI_Controller {
 	public function index()
 	{
 		$this->AllData();
-
 	}
 	public function AllData()
 	{
 		$AllData['ClassMaker'] = $this->db->get('ClassMaker')->result_array();
 		$AllData['AttributMaker']= array_reverse($this->db->get('AttributMaker')->result_array());
-		echo json_encode($AllData);
+		// echo json_encode($AllData);
+		$this->output->set_status_header(200)->set_content_type('application/json')->set_output(json_encode($AllData));
 	}
 
 	public function json_get()

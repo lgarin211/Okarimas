@@ -37,7 +37,7 @@
 							<?php } else { ?>
 								<textarea rows="5" class="col-md-6 " type="text" name="<?= $key ?>"
 										  placeholder="<?= $key ?>"></textarea>
-							<? }} ?>
+							<?php }} ?>
 						</div>
 						<button class="btn btn-primary col-md-12" type="submit">Kirim</button>
 					</form>
